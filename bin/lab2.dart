@@ -130,7 +130,7 @@ void runExercise1() {
   print(
     'Điểm GPA: $gpa | Trạng thái học: ${isEnrolled ? "Đang học" : "Đã nghỉ"}',
   );
-  print('Năm sinh dự kiến: ${DateTime.now().year - age}\n');
+  print('Năm sinh: ${DateTime.now().year - age}\n');
 }
 
 void runExercise2() {
