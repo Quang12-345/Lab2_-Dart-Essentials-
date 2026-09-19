@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 // ==========================================
 // EXERCISE 4: INTRO TO OOP
 // ==========================================
@@ -65,12 +66,59 @@ Stream<int> countStream(int max) async* {
 }
 
 // ==========================================
-// HÀM MAIN THỰC THI TOÀN BỘ 5 BÀI TẬP
+// MENU CHÍNH VÀ CÁC HÀM THỰC THI BÀI TẬP
 // ==========================================
 void main() async {
-  // ----------------------------------------------------
-  // EXERCISE 1: BASIC SYNTAX & DATA TYPES
-  // ----------------------------------------------------
+  while (true) {
+    print('\n=== MENU LAB 2 ===');
+    print('1. Basic Syntax & Data Types');
+    print('2. Collections & Operators');
+    print('3. Control Flow & Functions');
+    print('4. Intro to OOP');
+    print('5. Async, Future, Null Safety & Streams');
+    print('0. Thoát chương trình');
+
+    final choice = readInt('Chọn bài muốn chạy: ', defaultValue: 0);
+    if (choice == 0) {
+      print('Đã thoát chương trình.');
+      return;
+    }
+
+    if (choice < 1 || choice > 5) {
+      print('Lựa chọn không hợp lệ. Vui lòng chọn từ 0 đến 5.');
+      continue;
+    }
+
+    do {
+      await runExercise(choice);
+    } while (readBool(
+      'Bạn có muốn chạy lại bài này không? (y/n): ',
+      defaultValue: false,
+    ));
+  }
+}
+
+Future<void> runExercise(int choice) async {
+  switch (choice) {
+    case 1:
+      runExercise1();
+      break;
+    case 2:
+      runExercise2();
+      break;
+    case 3:
+      runExercise3();
+      break;
+    case 4:
+      runExercise4();
+      break;
+    case 5:
+      await runExercise5();
+      break;
+  }
+}
+
+void runExercise1() {
   print('=== EXERCISE 1: BASIC SYNTAX & DATA TYPES ===');
   String name = readText('Vui lòng nhập tên của bạn: ', defaultValue: 'Khách');
   int age = readInt('Nhập tuổi: ', defaultValue: 18);
@@ -79,14 +127,14 @@ void main() async {
 
   // In dùng string interpolation ($var và ${expr})
   print('Tên: $name | Tuổi: $age');
-  print('Điểm GPA: $gpa | Trạng thái học: ${isEnrolled ? "Đang học" : "Đã nghỉ"}');
+  print(
+    'Điểm GPA: $gpa | Trạng thái học: ${isEnrolled ? "Đang học" : "Đã nghỉ"}',
+  );
   print('Năm sinh dự kiến: ${DateTime.now().year - age}\n');
+}
 
-  // ----------------------------------------------------
-  // EXERCISE 2: COLLECTIONS & OPERATORS
-  // ----------------------------------------------------
+void runExercise2() {
   print('=== EXERCISE 2: COLLECTIONS & OPERATORS ===');
-  // List
   List<int> numbers = readIntList(
     'Nhập danh sách số nguyên, cách nhau bằng dấu phẩy: ',
     defaultValue: [10, 20, 30],
@@ -115,12 +163,10 @@ void main() async {
   Map<String, dynamic> student = {'id': studentId, 'score': studentScore};
   student['grade'] = 'A';
   print('Map thông tin: $student (Điểm: ${student['score']})\n');
+}
 
-  // ----------------------------------------------------
-  // EXERCISE 3: CONTROL FLOW & FUNCTIONS
-  // ----------------------------------------------------
+void runExercise3() {
   print('=== EXERCISE 3: CONTROL FLOW & FUNCTIONS ===');
-  // If / Else kiểm tra điểm
   double score = readDouble('Nhập điểm để xếp loại: ', defaultValue: 8.5);
   if (score >= 8.0) {
     print('Xếp loại: Giỏi');
@@ -130,7 +176,6 @@ void main() async {
     print('Xếp loại: Trung bình');
   }
 
-  // Switch / Case ngày trong tuần
   int day = readInt('Nhập ngày trong tuần (1-7): ', defaultValue: 3);
   switch (day) {
     case 1:
@@ -143,7 +188,6 @@ void main() async {
       print('Ngày khác trong tuần');
   }
 
-  // Vòng lặp: for, for-in, forEach
   List<String> fruits = readTextList(
     'Nhập danh sách trái cây, cách nhau bằng dấu phẩy: ',
     defaultValue: ['Táo', 'Chuối', 'Cam'],
@@ -158,37 +202,38 @@ void main() async {
   fruits.forEach((item) => stdoutWrite('$item '));
   print('\n');
 
-  // Gọi hàm
   int firstNumber = readInt('Nhập số thứ nhất để tính hàm: ', defaultValue: 5);
   int secondNumber = readInt('Nhập số thứ hai để tính hàm: ', defaultValue: 7);
-  print('Gọi hàm bình thường calculateSum: ${calculateSum(firstNumber, secondNumber)}');
+  print(
+    'Gọi hàm bình thường calculateSum: ${calculateSum(firstNumber, secondNumber)}',
+  );
   print('Gọi hàm arrow multiply: ${multiply(firstNumber, secondNumber)}\n');
+}
 
-  // ----------------------------------------------------
-  // EXERCISE 4: INTRO TO OOP
-  // ----------------------------------------------------
+void runExercise4() {
   print('=== EXERCISE 4: INTRO TO OOP ===');
-  // Khởi tạo bằng constructor mặc định
-  String carBrand = readText('Nhập tên xe xăng/dầu: ', defaultValue: 'Toyota Corolla');
+  String carBrand = readText(
+    'Nhập tên xe xăng/dầu: ',
+    defaultValue: 'Toyota Corolla',
+  );
   Car regularCar = Car(carBrand);
   regularCar.drive();
 
-  // Khởi tạo bằng named constructor
-  Car unknownCar = Car.unknown();
-  unknownCar.drive();
-
-  // Khởi tạo lớp kế thừa và kiểm tra tính đa hình
-  String electricBrand = readText('Nhập tên xe điện: ', defaultValue: 'Tesla Model 3');
-  int batteryCapacity = readInt('Nhập dung lượng pin (kWh): ', defaultValue: 75);
+  String electricBrand = readText(
+    'Nhập tên xe điện: ',
+    defaultValue: 'Tesla Model 3',
+  );
+  int batteryCapacity = readInt(
+    'Nhập dung lượng pin (kWh): ',
+    defaultValue: 75,
+  );
   ElectricCar tesla = ElectricCar(electricBrand, batteryCapacity);
   tesla.drive();
   print('');
+}
 
-  // ----------------------------------------------------
-  // EXERCISE 5: ASYNC, FUTURE, NULL SAFETY & STREAMS
-  // ----------------------------------------------------
+Future<void> runExercise5() async {
   print('=== EXERCISE 5: ASYNC, FUTURE, NULL SAFETY & STREAMS ===');
-  // Null Safety: ?, ??, !
   String? nullableName = readNullableText(
     'Nhập tên cho dữ liệu bất đồng bộ (để trống để dùng Khách): ',
   );
@@ -200,18 +245,18 @@ void main() async {
   String definiteName = nullableName!;
   print('Độ dài chuỗi (dùng !): ${definiteName.length}');
 
-  // Async / Await với Future.delayed
   print('⏳ Đang gọi API giả lập...');
   String apiResult = await fetchUserData(nullableName);
   print('✅ $apiResult');
 
-  // Stream và Stream.listen()
   print('⏳ Bắt đầu lắng nghe Stream số đếm:');
-  int streamMax = readInt('Nhập số phần tử Stream muốn nhận: ', defaultValue: 3);
+  int streamMax = readInt(
+    'Nhập số phần tử Stream muốn nhận: ',
+    defaultValue: 3,
+  );
   await for (int val in countStream(streamMax)) {
     print('  -> Nhận từ Stream: $val');
   }
-
 }
 
 // Hàm hỗ trợ in không xuống dòng cho vòng lặp
@@ -264,7 +309,10 @@ List<int> readIntList(String prompt, {required List<int> defaultValue}) {
   while (true) {
     final input = readText(prompt, defaultValue: '');
     if (input.isEmpty) return [...defaultValue];
-    final values = input.split(',').map((item) => int.tryParse(item.trim())).toList();
+    final values = input
+        .split(',')
+        .map((item) => int.tryParse(item.trim()))
+        .toList();
     if (values.length >= 2 && values.every((value) => value != null)) {
       return values.cast<int>();
     }
@@ -276,7 +324,11 @@ List<int> readIntList(String prompt, {required List<int> defaultValue}) {
 List<String> readTextList(String prompt, {required List<String> defaultValue}) {
   final input = readText(prompt, defaultValue: '');
   if (input.isEmpty) return [...defaultValue];
-  return input.split(',').map((item) => item.trim()).where((item) => item.isNotEmpty).toList();
+  return input
+      .split(',')
+      .map((item) => item.trim())
+      .where((item) => item.isNotEmpty)
+      .toList();
 }
 
 Set<String> readTextSet(String prompt, {required Set<String> defaultValue}) {
